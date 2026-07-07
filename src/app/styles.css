@@ -1,0 +1,38 @@
+:root {
+  color-scheme: dark;
+  --background: #07111f;
+  --panel: rgba(9, 27, 48, 0.78);
+  --panel-border: rgba(111, 221, 255, 0.26);
+  --text: #eaf7ff;
+  --muted: #8eb7c9;
+  --cyan: #24d9ff;
+  --green: #37e7a1;
+  --amber: #ffc857;
+  --rose: #ff5f8f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  min-width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow-x: hidden;
+  background: var(--background);
+  font-family:
+    Inter, "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
