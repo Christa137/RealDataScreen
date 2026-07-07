@@ -4,7 +4,9 @@
 
 ## 项目预览
 
-项目截图可通过自动化截图命令生成，默认输出到 `docs/screenshots/dashboard-1920x1080.png`。
+![DataScreen 数据大屏](docs/screenshots/dashboard-1920x1080.png)
+
+
 
 ## 项目简介
 
