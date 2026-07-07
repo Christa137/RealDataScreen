@@ -5,13 +5,14 @@
   "type": "module",
   "description": "DataScreen 数据大屏：一个基于 Vue 3 的纯前端数据可视化大屏项目。",
   "scripts": {
-    "dev": "vite --host 127.0.0.1",
+    "dev": "vite --host 127.0.0.1 --port 10001",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview --host 127.0.0.1",
+    "preview": "vite preview --host 127.0.0.1 --port 10001",
     "lint": "eslint . && stylelint \"src/**/*.{css,vue}\"",
     "format": "prettier --write .",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "screenshot": "node scripts/capture-dashboard.mjs"
   },
   "dependencies": {
     "axios": "^1.18.1",

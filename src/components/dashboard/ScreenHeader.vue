@@ -5,8 +5,10 @@
       <span>Mock 数据在线</span>
     </div>
     <div class="screen-header__title">
+      <div class="title-deco-line left"></div>
       <strong>DataScreen</strong>
       <span>数据大屏</span>
+      <div class="title-deco-line right"></div>
     </div>
     <div class="screen-header__side screen-header__side--right">
       <span>{{ clock }}</span>
@@ -41,8 +43,15 @@ onBeforeUnmount(() => {
   height: 78px;
   padding: 0 28px;
   background:
-    linear-gradient(90deg, transparent, rgba(36, 217, 255, 0.18), transparent),
-    linear-gradient(180deg, rgba(13, 37, 66, 0.82), transparent);
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(56, 189, 248, 0.08) 35%,
+      rgba(56, 189, 248, 0.14) 50%,
+      rgba(56, 189, 248, 0.08) 65%,
+      transparent 100%
+    ),
+    linear-gradient(180deg, rgba(13, 37, 66, 0.88), transparent);
 }
 
 .screen-header__title {
@@ -52,29 +61,53 @@ onBeforeUnmount(() => {
   align-items: baseline;
   justify-content: center;
   color: var(--text);
-  text-shadow: 0 0 22px rgba(36, 217, 255, 0.55);
 }
 
 .screen-header__title strong {
   font-size: 34px;
-  letter-spacing: 0;
+  letter-spacing: 2px;
+  text-shadow:
+    0 0 28px rgba(56, 189, 248, 0.5),
+    0 0 8px rgba(56, 189, 248, 0.2);
 }
 
 .screen-header__title span {
   color: var(--cyan);
   font-size: 22px;
   font-weight: 700;
+  text-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
 }
 
+/* Title decorative lines */
+.title-deco-line {
+  position: absolute;
+  top: 50%;
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: translateY(-50%);
+  opacity: 0.5;
+}
+
+.title-deco-line.left {
+  right: calc(100% + 20px);
+}
+
+.title-deco-line.right {
+  left: calc(100% + 20px);
+}
+
+/* Bottom accent bar */
 .screen-header__title::after {
   position: absolute;
-  bottom: -16px;
+  bottom: -18px;
   left: 50%;
-  width: 460px;
+  width: 480px;
   height: 2px;
   content: '';
-  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--jade), var(--cyan), transparent);
   transform: translateX(-50%);
+  opacity: 0.6;
 }
 
 .screen-header__side {
@@ -95,5 +128,17 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   background: var(--green);
   box-shadow: 0 0 14px var(--green);
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px var(--green);
+  }
+
+  50% {
+    box-shadow: 0 0 20px var(--green), 0 0 32px rgba(52, 211, 153, 0.4);
+  }
 }
 </style>

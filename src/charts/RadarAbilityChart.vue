@@ -26,7 +26,7 @@ const option = computed<EChartsOption>(() => ({
     })),
     axisName: { color: screenTheme.colors.muted },
     splitLine: { lineStyle: { color: 'rgba(142,183,201,0.18)' } },
-    splitArea: { areaStyle: { color: ['rgba(36,217,255,0.04)', 'rgba(36,217,255,0.01)'] } },
+    splitArea: { areaStyle: { color: ['rgba(56,189,248,0.04)', 'rgba(56,189,248,0.01)'] } },
     axisLine: { lineStyle: { color: 'rgba(142,183,201,0.2)' } },
   },
   series: [

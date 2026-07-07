@@ -32,7 +32,7 @@ defineProps<{
   align-content: center;
   min-width: 0;
   padding: 12px;
-  border: 1px solid rgba(111, 221, 255, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.16);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.04);
 }

@@ -31,7 +31,7 @@ defineProps<{
   align-items: center;
   min-height: 34px;
   padding: 0 10px;
-  border: 1px solid rgba(111, 221, 255, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.14);
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.04);
   color: var(--text);

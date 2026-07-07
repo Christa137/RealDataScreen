@@ -16,12 +16,12 @@
           <PieStatusChart :data="dashboard.categories" />
         </BasePanel>
 
-        <BasePanel class="panel-hub" title="数据枢纽态势" meta="Realtime Topology">
+        <BasePanel class="panel-hub" title="数据中枢态势" meta="Realtime Topology">
           <DataHubChart :nodes="dashboard.nodes" :links="dashboard.links" />
           <div class="hub-kpis">
-            <span>吞吐 72.6k/s</span>
-            <span>延迟 18ms</span>
-            <span>可用性 99.96%</span>
+            <span>吞吐 {{ hubKpis.throughput }}</span>
+            <span>延迟 {{ hubKpis.latency }}</span>
+            <span>可用性 {{ hubKpis.uptime }}</span>
           </div>
         </BasePanel>
 
@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onBeforeUnmount, onMounted } from 'vue'
 
 import BarRankingChart from '@/charts/BarRankingChart.vue'
 import DataHubChart from '@/charts/DataHubChart.vue'
@@ -68,8 +68,28 @@ import { useDashboardStore } from '@/stores/dashboardStore'
 const store = useDashboardStore()
 const dashboard = computed(() => store.data)
 
-onMounted(() => {
-  void store.load()
+const hubKpis = computed(() => {
+  const nodes = dashboard.value?.nodes ?? []
+  if (nodes.length === 0) return { throughput: '-- k/s', latency: '--ms', uptime: '--%' }
+  const avgLoad = nodes.reduce((s, n) => s + n.load, 0) / nodes.length
+  const onlineCount = nodes.filter((n) => n.status !== 'offline').length
+  const uptime = Math.round((onlineCount / nodes.length) * 10000) / 100
+  const throughput = Math.round(avgLoad * 950 + 4000)
+  const latency = Math.round(32 - avgLoad * 0.18)
+  return {
+    throughput: `${(throughput / 1000).toFixed(1)}k/s`,
+    latency: `${latency}ms`,
+    uptime: `${uptime.toFixed(2)}%`,
+  }
+})
+
+onMounted(async () => {
+  await store.load()
+  store.startRealtime()
+})
+
+onBeforeUnmount(() => {
+  store.stopRealtime()
 })
 </script>
 
@@ -87,9 +107,9 @@ onMounted(() => {
   pointer-events: none;
   content: '';
   background-image:
-    linear-gradient(rgba(111, 221, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(111, 221, 255, 0.04) 1px, transparent 1px);
-  background-size: 34px 34px;
+    linear-gradient(rgba(56, 189, 248, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.045) 1px, transparent 1px);
+  background-size: 38px 38px;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent);
 }
 
@@ -156,9 +176,9 @@ onMounted(() => {
 .hub-kpis span {
   min-width: 0;
   padding: 10px 12px;
-  border: 1px solid rgba(111, 221, 255, 0.16);
+  border: 1px solid rgba(56, 189, 248, 0.18);
   border-radius: 6px;
-  background: rgba(3, 11, 23, 0.52);
+  background: rgba(3, 11, 23, 0.56);
   color: var(--text);
   font-size: 14px;
   text-align: center;

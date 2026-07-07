@@ -45,7 +45,7 @@ const option = computed<EChartsOption>(() => ({
           y2: 1,
           colorStops: [
             { offset: 0, color: screenTheme.colors.amber },
-            { offset: 1, color: 'rgba(255,200,87,0.2)' },
+            { offset: 1, color: 'rgba(251,191,36,0.18)' },
           ],
         },
       },
