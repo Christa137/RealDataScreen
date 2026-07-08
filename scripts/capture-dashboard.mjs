@@ -37,7 +37,7 @@ async function main() {
     const page = await context.newPage()
 
     // Collect console errors
-    const errors: string[] = []
+    const errors = []
     page.on('console', (msg) => {
       if (msg.type() === 'error') {
         errors.push(msg.text())
