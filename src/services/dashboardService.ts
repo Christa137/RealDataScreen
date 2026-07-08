@@ -104,7 +104,7 @@ function transformApiResponse(api: DashboardApiResponse): DashboardData {
 export async function getDashboardData(): Promise<DashboardData> {
   // Real data from backend API (requires MySQL + server running)
   if (import.meta.env.VITE_DATA_SOURCE === 'api') {
-    const response = await http.get<DashboardApiResponse>('/api/dashboard')
+    const response = await http.get<DashboardApiResponse>('/dashboard')
     return transformApiResponse(response.data)
   }
 
