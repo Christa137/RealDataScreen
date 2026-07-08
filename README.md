@@ -1,4 +1,4 @@
-: # DataScreen 数据大屏
+# DataScreen 数据大屏
 
 基于 Vue 3 + TypeScript + ECharts + Express + MySQL 构建的数据可视化大屏项目。采用深色科技风 + 国风元素融合设计，展示数据中心 20 台服务器的真实运行监控数据。
 
