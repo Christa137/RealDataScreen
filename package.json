@@ -6,7 +6,7 @@
   "description": "DataScreen 数据大屏：一个基于 Vue 3 的纯前端数据可视化大屏项目。",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 10001",
-    "server": "node server/index.js",
+    "server": "node server/index.cjs",
     "start": "concurrently \"npm run server\" \"npm run dev\"",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1 --port 10001",
@@ -20,6 +20,7 @@
   "dependencies": {
     "axios": "^1.18.1",
     "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
     "echarts": "^6.1.0",
     "express": "^5.1.0",
     "mysql2": "^3.14.0",
