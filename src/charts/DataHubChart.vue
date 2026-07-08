@@ -16,19 +16,16 @@ const props = defineProps<{
   links: HubLink[]
 }>()
 
-// Fixed visual coordinates for business nodes (cartesian 0-100 space, center at 50,50)
-const COORD_MAP: Record<string, [number, number]> = {
-  采集网关: [50, 15],
-  实时计算: [86, 35],
-  指标仓库: [73, 80],
-  告警中心: [27, 80],
-  'API 边缘': [14, 35],
-}
-
 const CENTER: [number, number] = [50, 50]
+const RADIUS = 34
 
-function getCoord(name: string): [number, number] {
-  return COORD_MAP[name] ?? CENTER
+// Place nodes evenly on a ring around the center, top first, clockwise
+function getCoord(index: number, total: number): [number, number] {
+  const angle = -Math.PI / 2 + (index / total) * Math.PI * 2
+  return [
+    Math.round((CENTER[0] + RADIUS * Math.cos(angle)) * 100) / 100,
+    Math.round((CENTER[1] + RADIUS * Math.sin(angle)) * 100) / 100,
+  ]
 }
 
 const statusColor = (s: NodeStatus['status']) =>
@@ -49,14 +46,22 @@ const option = computed<EChartsOption>(() => {
   const links = props.links
 
   // ── Hub-spoke radial lines (center → each node) ──────────────
-  const spokeLines = nodes.map((n) => ({
-    coords: [CENTER, getCoord(n.name)],
+  const spokeLines = nodes.map((_, i) => ({
+    coords: [CENTER, getCoord(i, nodes.length)],
   }))
 
   // ── Peer-to-peer data links with flowing dots ─────────────────
-  const dataLinks = links.map((l) => ({
-    coords: [getCoord(l.source), getCoord(l.target)],
-  }))
+  const indexMap = new Map(nodes.map((n, i) => [n.name, i]))
+  const dataLinks = links
+    .map((l) => {
+      const s = indexMap.get(l.source)
+      const t = indexMap.get(l.target)
+      if (s === undefined || t === undefined) return null
+      return {
+        coords: [getCoord(s, nodes.length), getCoord(t, nodes.length)],
+      }
+    })
+    .filter((item): item is { coords: [[number, number], [number, number]] } => item !== null)
 
   return {
     tooltip: {
@@ -168,7 +173,7 @@ const option = computed<EChartsOption>(() => {
         data: [
           {
             value: CENTER,
-            name: '数据中枢',
+            name: '监控中枢',
             itemStyle: {
               color: screenTheme.colors.cyan,
               shadowBlur: 40,
@@ -186,7 +191,7 @@ const option = computed<EChartsOption>(() => {
           color: screenTheme.colors.text,
           fontSize: 13,
           fontWeight: 700,
-          formatter: '数据中枢',
+          formatter: '监控中枢',
           textShadowColor: 'rgba(0,0,0,0.7)',
           textShadowBlur: 4,
         },
@@ -231,14 +236,14 @@ const option = computed<EChartsOption>(() => {
           textShadowBlur: 3,
           formatter: (p: { data?: { name?: string } }) => (p.data as { name?: string })?.name ?? '',
         },
-        data: nodes.map((n) => {
-          const coord = getCoord(n.name)
+        data: nodes.map((n, i) => {
+          const coord = getCoord(i, nodes.length)
           return {
             value: coord,
             name: n.name,
             load: n.load,
             status: n.status,
-            symbolSize: 32 + n.load / 3,
+            symbolSize: 28 + n.load / 4,
             itemStyle: {
               color: statusColor(n.status),
               shadowBlur: 16,

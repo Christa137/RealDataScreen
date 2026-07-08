@@ -9,8 +9,7 @@ export interface SummaryMetric {
 
 export interface TrendPoint {
   time: string
-  visits: number
-  orders: number
+  value: number
 }
 
 export interface CategoryShare {
@@ -58,4 +57,39 @@ export interface DashboardData {
   activities: ActivityItem[]
   nodes: NodeStatus[]
   links: HubLink[]
+}
+
+// ── Backend API types (server monitoring) ─────────────────────────
+
+export interface ServerHost {
+  hostid: string
+  hostname: string
+  cpu_usage: number | null
+  mem_used: number | null
+  load1: number | null
+  net_in: number | null
+}
+
+export interface DashboardSummary {
+  total_hosts: number
+  avg_cpu: number | null
+  avg_mem: number | null
+  avg_load: number | null
+  alert_hosts: number
+}
+
+export interface MetricTrend {
+  time: string
+  value: number
+}
+
+export interface DashboardApiResponse {
+  updatedAt: string
+  latestHour: string
+  summary: DashboardSummary
+  hosts: ServerHost[]
+  cpuTrend: MetricTrend[]
+  memTrend: MetricTrend[]
+  topHosts: { hostid: string; hostname: string; value: number }[]
+  categories: { name: string; value: number }[]
 }

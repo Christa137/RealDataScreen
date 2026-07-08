@@ -15,17 +15,14 @@ describe('dashboardService', () => {
     const first = await getDashboardData()
     const second = await getDashboardData()
 
-    // updatedAt should have changed
     expect(second.updatedAt).not.toBe(first.updatedAt)
 
-    // metrics should be evolving
-    const firstVisits = first.metrics.find((m) => m.id === 'visits')?.value ?? 0
-    const secondVisits = second.metrics.find((m) => m.id === 'visits')?.value ?? 0
-    expect(secondVisits).toBeGreaterThanOrEqual(firstVisits)
+    const firstCpu = first.metrics.find((m) => m.id === 'cpu')?.value ?? 0
+    const secondCpu = second.metrics.find((m) => m.id === 'cpu')?.value ?? 0
+    expect(secondCpu).not.toBe(firstCpu)
   })
 
   it('trends array stays within reasonable bounds', async () => {
-    // Call multiple times and verify trends length bounded
     for (let i = 0; i < 20; i++) {
       await getDashboardData()
     }
@@ -43,7 +40,6 @@ describe('dashboardService', () => {
   })
 
   it('categories sum to 100', async () => {
-    // Run enough frames to trigger category update
     for (let i = 0; i < 10; i++) {
       await getDashboardData()
     }

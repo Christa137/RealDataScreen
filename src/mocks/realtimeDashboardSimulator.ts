@@ -62,18 +62,17 @@ function updateMetrics(metrics: SummaryMetric[]): SummaryMetric[] {
     let next: number
 
     switch (m.id) {
-      case 'visits':
-        next = prev + 20 + Math.floor(Math.random() * 280)
+      case 'hosts':
+        next = prev
         break
-      case 'orders':
-        next = prev + Math.floor(Math.random() * 80)
+      case 'cpu':
+        next = clamp(prev + (Math.random() - 0.5) * 6, 5, 95)
         break
-      case 'users':
-        next = prev + Math.floor((Math.random() - 0.5) * prev * 0.06)
-        next = Math.max(1000, next)
+      case 'mem':
+        next = clamp(prev + (Math.random() - 0.5) * 2000, 10000, 130000)
         break
-      case 'health':
-        next = 95 + Math.random() * 4.9
+      case 'alerts':
+        next = clamp(prev + Math.floor((Math.random() - 0.5) * 3), 0, 20)
         break
       default:
         next = prev
@@ -88,25 +87,17 @@ function updateMetrics(metrics: SummaryMetric[]): SummaryMetric[] {
   })
 }
 
-function updateTrends(trends: TrendPoint[], metrics: SummaryMetric[]): TrendPoint[] {
-  const visitsMetric = metrics.find((m) => m.id === 'visits')
-  const ordersMetric = metrics.find((m) => m.id === 'orders')
-
-  // Append a new point every frame
+function updateTrends(trends: TrendPoint[]): TrendPoint[] {
   const last = trends[trends.length - 1]
-  const nextVisits = last
-    ? last.visits + Math.floor((Math.random() - 0.3) * 500)
-    : (visitsMetric?.value ?? 128000)
-  const nextOrders = last
-    ? last.orders + Math.floor((Math.random() - 0.3) * 40)
-    : (ordersMetric?.value ?? 8400)
+  const nextValue = last
+    ? clamp(last.value + (Math.random() - 0.5) * 8, 5, 95)
+    : 45
 
   const slice = [
     ...trends,
     {
       time: nowTime(),
-      visits: Math.max(0, nextVisits),
-      orders: Math.max(0, nextOrders),
+      value: Math.round(nextValue * 100) / 100,
     },
   ]
 
@@ -202,7 +193,7 @@ export function nextDashboardFrame(): DashboardData {
   frameIndex++
 
   state.metrics = updateMetrics(state.metrics)
-  state.trends = updateTrends(state.trends, state.metrics)
+  state.trends = updateTrends(state.trends)
 
   // Low-frequency updates
   if (frameIndex % 3 === 0) {

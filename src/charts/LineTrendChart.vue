@@ -13,17 +13,14 @@ import { useChart } from './useChart'
 
 const props = defineProps<{
   data: TrendPoint[]
+  name?: string
+  color?: string
 }>()
 
 const option = computed<EChartsOption>(() => ({
-  color: [screenTheme.colors.cyan, screenTheme.colors.green],
+  color: [props.color || screenTheme.colors.cyan],
   tooltip: { trigger: 'axis' },
   grid: { top: 28, right: 16, bottom: 24, left: 42 },
-  legend: {
-    top: 0,
-    right: 0,
-    textStyle: { color: screenTheme.colors.muted },
-  },
   xAxis: {
     type: 'category',
     data: props.data.map((item) => item.time),
@@ -37,19 +34,12 @@ const option = computed<EChartsOption>(() => ({
   },
   series: [
     {
-      name: '访问量',
+      name: props.name || '指标值',
       type: 'line',
       smooth: true,
       symbol: 'circle',
       areaStyle: { opacity: 0.16 },
-      data: props.data.map((item) => item.visits),
-    },
-    {
-      name: '订单数',
-      type: 'line',
-      smooth: true,
-      symbol: 'circle',
-      data: props.data.map((item) => item.orders),
+      data: props.data.map((item) => item.value),
     },
   ],
 }))

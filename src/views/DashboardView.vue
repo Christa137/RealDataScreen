@@ -8,15 +8,15 @@
           <MetricCard v-for="metric in dashboard.metrics" :key="metric.id" :metric="metric" />
         </section>
 
-        <BasePanel class="panel-trend" title="访问趋势" meta="Visits / Orders">
-          <LineTrendChart :data="dashboard.trends" />
+        <BasePanel class="panel-trend" title="CPU 趋势" meta="Cluster Average">
+          <LineTrendChart :data="dashboard.trends" name="CPU 使用率" color="#38bdf8" />
         </BasePanel>
 
-        <BasePanel class="panel-category" title="业务占比" meta="Share">
+        <BasePanel class="panel-category" title="指标类型占比" meta="pref / disk">
           <PieStatusChart :data="dashboard.categories" />
         </BasePanel>
 
-        <BasePanel class="panel-hub" title="数据中枢态势" meta="Realtime Topology">
+        <BasePanel class="panel-hub" title="主机拓扑态势" meta="Realtime Topology">
           <DataHubChart :nodes="dashboard.nodes" :links="dashboard.links" />
           <div class="hub-kpis">
             <span>吞吐 {{ hubKpis.throughput }}</span>
@@ -25,19 +25,19 @@
           </div>
         </BasePanel>
 
-        <BasePanel class="panel-ranking" title="区域访问排名" meta="Top Cities">
+        <BasePanel class="panel-ranking" title="CPU 使用排名" meta="Top Hosts">
           <BarRankingChart :data="dashboard.rankings" />
         </BasePanel>
 
-        <BasePanel class="panel-radar" title="平台能力雷达" meta="Capability">
+        <BasePanel class="panel-radar" title="集群能力雷达" meta="Capability">
           <RadarAbilityChart :data="dashboard.radar" />
         </BasePanel>
 
-        <BasePanel class="panel-activity" title="实时动态" meta="Live Feed">
+        <BasePanel class="panel-activity" title="告警动态" meta="Live Feed">
           <ActivityList :activities="dashboard.activities" />
         </BasePanel>
 
-        <BasePanel class="panel-nodes" title="服务节点状态" meta="Load">
+        <BasePanel class="panel-nodes" title="主机节点状态" meta="Load">
           <NodeStatusGrid :nodes="dashboard.nodes" />
         </BasePanel>
       </div>

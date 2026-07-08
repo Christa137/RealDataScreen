@@ -6,17 +6,23 @@
   "description": "DataScreen 数据大屏：一个基于 Vue 3 的纯前端数据可视化大屏项目。",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 10001",
+    "server": "node server/index.js",
+    "start": "concurrently \"npm run server\" \"npm run dev\"",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1 --port 10001",
     "lint": "eslint . && stylelint \"src/**/*.{css,vue}\"",
     "format": "prettier --write .",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "screenshot": "node scripts/capture-dashboard.mjs"
+    "screenshot": "node scripts/capture-dashboard.mjs",
+    "load-data": "python scripts/load_data_to_mysql.py"
   },
   "dependencies": {
     "axios": "^1.18.1",
+    "cors": "^2.8.5",
     "echarts": "^6.1.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.0",
     "pinia": "^3.0.4",
     "vue": "^3.5.39"
   },
@@ -27,6 +33,7 @@
     "@vitejs/plugin-vue": "^6.0.7",
     "@vue/test-utils": "^2.4.11",
     "@vue/tsconfig": "^0.9.1",
+    "concurrently": "^9.1.2",
     "eslint": "^10.6.0",
     "eslint-plugin-vue": "^10.9.2",
     "jiti": "^2.7.0",
