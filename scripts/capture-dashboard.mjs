@@ -32,7 +32,7 @@ async function main() {
     const { chromium } = await import('@playwright/test')
 
     console.log(`Launching browser for screenshot ...`)
-    browser = await chromium.launch({ headless: true })
+    browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] })
     const context = await browser.newContext({ viewport: VIEWPORT })
     const page = await context.newPage()
 

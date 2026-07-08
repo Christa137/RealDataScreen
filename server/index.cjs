@@ -50,6 +50,7 @@ app.get('/api/dashboard', async (_req, res) => {
     )
 
     // ---- hosts ----
+    // 按每个 (hostid, mod) 取各自最新 hour_start，避免不同模块更新时间不同导致某指标为 NULL
     const [hosts] = await db.execute(
       `SELECT h.hostid, h.hostname,
          MAX(CASE WHEN h.\`mod\` = 'cpu_usage' THEN h.avg_value END) AS cpu_usage,
@@ -58,10 +59,12 @@ app.get('/api/dashboard', async (_req, res) => {
          MAX(CASE WHEN h.\`mod\` = 'net_in' THEN h.avg_value END) AS net_in
        FROM hourly_summary h
        INNER JOIN (
-         SELECT hostid, MAX(hour_start) AS latest
-         FROM hourly_summary GROUP BY hostid
+         SELECT hostid, \`mod\`, MAX(hour_start) AS latest
+         FROM hourly_summary GROUP BY hostid, \`mod\`
        ) latest
-         ON h.hostid = latest.hostid AND h.hour_start = latest.latest
+         ON h.hostid = latest.hostid
+        AND h.\`mod\` = latest.\`mod\`
+        AND h.hour_start = latest.latest
        GROUP BY h.hostid, h.hostname
        ORDER BY h.hostid`
     )
