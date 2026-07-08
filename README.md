@@ -1,4 +1,4 @@
-# DataScreen 数据大屏
+: # DataScreen 数据大屏
 
 基于 Vue 3 + TypeScript + ECharts + Express + MySQL 构建的数据可视化大屏项目。采用深色科技风 + 国风元素融合设计，展示数据中心 20 台服务器的真实运行监控数据。
 
@@ -95,10 +95,12 @@ pip install -r scripts/requirements.txt
 
 ```text
 DB_HOST=127.0.0.1
-DB_PORT=3306
+DB_PORT=3307
 DB_USER=root
-DB_PASSWORD=root
+DB_PASSWORD=123456
 DB_NAME=datascreen
+
+VITE_DATA_SOURCE=api
 ```
 
 如果你的 MySQL 配置不同，修改 `.env` 文件即可。
